@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro"
+       name="ecnu_ur5" >
+
+  <xacro:include filename="table.xacro"/>
+
+
+  <xacro:property name="pi" value="3.1415926535897931" />
+  <!-- ur5 -->
+  <xacro:include filename="$(find ur_description)/urdf/ur5.urdf.xacro" />
+
+  <!-- robotiq 85 -->
+  <xacro:include filename="$(find robotiq_85_description)/urdf/robotiq_85_gripper.urdf.xacro" />
+
+  <!-- world cross -->
+  <link name="world_link">
+    <visual>
+      <geometry>
+	<box size="0.03 0.005 0.001" />
+	<material name="Black" />
+      </geometry>
+    </visual>
+    <visual>
+      <geometry>
+	<box size="0.005 0.03 0.001" />
+	<material name="Black" />
+      </geometry>
+    </visual>
+  </link>
+
+  <!-- arm -->
+    <joint name="world_robot_joint" type="fixed">
+      <origin xyz="0.0 0.0 0.0" rpy="0 0 ${pi*0.25}"/>
+      <parent link="world_link"/>
+      <child link="base_link"/>
+    </joint>
+  <xacro:ur5_robot prefix="" joint_limited="true"/>
+
+  <!-- gripper -->
+  <xacro:robotiq_85_gripper prefix="" parent="tool0" >
+      <origin xyz="0 0 -0.003" rpy="0 0 ${pi*0.5}"/>
+  </xacro:robotiq_85_gripper>
+
+  <!--table-->
+  <!-- draw the table relative to the origin -->
+  <xacro:model_table name="table_robot" 
+		     parent="world"
+		     length="0.50"
+		     width="0.42"
+		     height="0.75"
+		     plate_thickness="0.03">
+		     
+    <origin xyz="-0.25 0.21 -0.003" rpy="0 0 0"/>
+    
+  </xacro:model_table>
+  
+  <xacro:model_table name="table" 
+		     parent="world"
+		     length="0.50"
+		     width="0.42"
+		     height="0.58"
+		     plate_thickness="0.03">
+		     
+    <origin xyz="0.435 0.21 -0.158" rpy="0 0 0"/>
+    
+  </xacro:model_table>
+ 
+
+</robot>

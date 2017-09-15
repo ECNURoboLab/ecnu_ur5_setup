@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!-- Parameters of the ur5 driver -->
+  <arg name="arm_ip" default="192.168.0.6"/>
+  <arg name="min_payload" default="0.0"/>
+  <arg name="max_payload" default="5.0"/>
+
+  <!--robotiq params-->
+  <arg name="comport" default="/dev/ttyUSB0"/>
+  <arg name="baud" default="115200"/>
+
+
+  <!-- ur5 -->
+  <include file="$(find ur_modern_driver)/launch/ur_common.launch">
+    <arg name="robot_ip" value="$(arg arm_ip)"/>
+    <arg name="min_payload" value="$(arg min_payload)"/>
+    <arg name="max_payload" value="$(arg max_payload)"/>
+  </include>
+
+  <!-- Gripper -->
+
+  <node pkg="robotiq_85_driver" type="robotiq_85_driver" name="robotiq_85_driver" respawn="true" output="screen">
+       <param name="num_grippers" value="1" />      
+       <param name="comport" value="$(arg comport)" />
+       <param name="baud" value="$(arg baud)" />
+  </node>
+
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" >
+       <rosparam param="source_list">[/gripper/joint_states,/joint_states]</rosparam>
+  </node>
+  
+  <!-- Gripper Action Server-->
+  <include file="$(find robotiq_85_rs485_action_server)/launch/robotiq_85_rs485_action_server.launch"/>
+
+
+</launch>

@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+
+<launch>
+
+    <arg name="gripper_name" default="gripper" />
+    <arg name="gripper_action_name" default="gripper_action" />
+
+
+    <node name="robotiq_85_rs485_action_server" pkg="robotiq_85_rs485_action_server"
+          type="robotiq_85_rs485_action_server_node" output="screen">
+        <param name="gripper_name" type="str" value="$(arg gripper_action_name)" />
+
+
+        <remap from="input" to="$(arg gripper_name)/stat" />
+        <remap from="output" to="$(arg gripper_name)/cmd" />
+    </node>
+
+</launch>

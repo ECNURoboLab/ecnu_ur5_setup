@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<launch>
+
+  <include file="$(find ecnu_ur5_bringup)/launch/ecnu_ur5_drivers.launch"/>
+  <include file="$(find ecnu_ur5_support)/launch/ecnu_ur5_upload.launch"/>
+
+</launch>

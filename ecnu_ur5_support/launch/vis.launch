@@ -1,0 +1,17 @@
+<launch>
+    <!-- Load the robot model the global parameter server -->
+    <param name="robot_description" command="$(find xacro)/xacro.py '$(find ecnu_ur5_support)/urdf/ecnu_ur5_robot.xacro'"/>
+
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
+
+
+
+    <!-- Remember that a joint_state_publisher might be necessary to combine the outputs of two nodes that publish
+         on the 'joint_states' topic. This node also helps with demonstration because it will publish dummy zero
+         values for any joint that it does not see being handled by one of the topics in the 'source_list' param -->
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+        
+    </node>
+
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find ecnu_ur5_support)/ecnu_ur5.rviz" />
+</launch>
