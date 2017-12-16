@@ -1,0 +1,72 @@
+#!/usr/bin/env python
+
+import rospy
+from robotiq_85_msgs.msg import GripperCmd, GripperStat
+from robotiq_85_msgs import srv as service
+class Robotiq85Server:
+    def __init__(self):
+
+        rospy.Subscriber("/gripper/stat", GripperStat, self._update_gripper_stat, queue_size=10)
+        self._gripper_pub = rospy.Publisher('/gripper/cmd', GripperCmd, queue_size=10)
+        self.open_close_service = rospy.Service("open_close_service", service.Gripper, self.open_close_service)
+        self._gripper_stat = GripperStat()
+        self._gripper_cmd = GripperCmd()
+        self.READY = False
+        self._gripper_init()
+
+    def _gripper_init(self):
+        while not self.READY:
+            self.READY = True
+
+
+
+    def _update_gripper_stat(self, stat):
+        self._gripper_stat = stat
+
+
+
+    def _gripperOpen(self):
+        self._gripper_cmd.position = 0.085
+        self._gripper_cmd.speed = 0.02
+        self._gripper_cmd.force = 50.0
+        self._gripper_pub.publish(self._gripper_cmd)
+        while  self._gripper_stat.is_moving or self._gripper_stat.position < 0.080:
+            if self._gripper_stat.position > 0.082:
+                print "======== gripper open success True ========"
+                return True
+            self._gripper_pub.publish(self._gripper_cmd)
+        print "======== gripper open success ========"
+        return True
+
+    def _gripperClose(self):
+        self._gripper_cmd.position = 0.0
+        self._gripper_cmd.speed = 0.02
+        self._gripper_cmd.force = 50.0
+        self._gripper_pub.publish(self._gripper_cmd)
+        while not self._gripper_stat.obj_detected or self._gripper_stat.is_moving:
+            if self._gripper_stat.position < 0.002:
+                print "The gripper didn't get the object!!!!"
+                return False
+            self._gripper_pub.publish(self._gripper_cmd)
+        print "======== gripper close success ========"
+        print "The gripper get the object !!!!"
+        return self._gripper_stat.obj_detected
+
+    def open_close_service(self, req):
+        ret = service.GripperResponse()
+        if req.open_gripper:
+            ret.success = self._gripperOpen()
+        if req.close_gripper:
+            ret.success = self._gripperClose()
+        return ret
+
+if __name__ == "__main__":
+    """
+    Initialize the node
+    """
+    rospy.init_node('robotiq_85_server')
+    print "===== Robotiq_85_server node is upping ======"
+    srv = Robotiq85Server()
+
+
+    rospy.spin()

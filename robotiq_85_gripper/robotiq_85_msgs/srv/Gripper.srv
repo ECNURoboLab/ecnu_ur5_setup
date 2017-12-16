@@ -1,0 +1,4 @@
+bool open_gripper
+bool close_gripper
+---
+bool success
