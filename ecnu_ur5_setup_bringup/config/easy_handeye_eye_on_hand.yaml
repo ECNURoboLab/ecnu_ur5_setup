@@ -1,0 +1,6 @@
+eye_on_hand: true
+robot_base_frame: base_link
+tracking_base_frame: camera_link
+robot_effector_frame: ee_link
+transformation: {qw: 0.9999059008252221, qx: -0.0060273815864974045, qy: 0.012210871134264622,
+  qz: 0.0016597566852358718, x: 0.08962935130949597, y: 0.06703703691134019, z: 0.08267818722585661}

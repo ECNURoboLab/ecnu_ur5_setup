@@ -17,8 +17,10 @@ while rospy.get_time() == 0.0:
 inverse = False
 
 # remove the dependence of easy hand eye
-
-filename = "/home/sun/ros_ws/ws_ecnu_ur5_setup/src/ecnu_ur5_setup_bringup/config/easy_handeye_eye_on_base.yaml"
+# the eye on hand config filename
+filename = "/home/sun/ws/ecnu_ur5_setup_ws/src/ecnu_ur5_setup/ecnu_ur5_setup_bringup/config/easy_handeye_eye_on_hand.yaml"
+# the eye to hand config filename
+#filename = "/home/sun/ws/ecnu_ur5_setup_ws/src/ecnu_ur5_setup/ecnu_ur5_setup_bringup/config/easy_handeye_eye_on_base.yaml"
 
 # global var
 robot_effector_frame = ""
