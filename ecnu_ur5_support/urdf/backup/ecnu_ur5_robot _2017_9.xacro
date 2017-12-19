@@ -5,13 +5,7 @@
   <xacro:include filename="table.xacro"/>
 
 
-  <xacro:include filename="$(find ecnu_ur5_support)/urdf/xtion/xtion_pro_live.urdf.xacro"/>
-
-
-
   <xacro:property name="pi" value="3.1415926535897931" />
-
-
   <!-- ur5 -->
   <xacro:include filename="$(find ur_description)/urdf/ur5.urdf.xacro" />
 
@@ -36,7 +30,7 @@
 
   <!-- arm -->
     <joint name="world_robot_joint" type="fixed">
-      <origin xyz="0.0 0.0 0.0" rpy="0 0 0"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0 0 ${pi*0.25}"/>
       <parent link="world_link"/>
       <child link="base_link"/>
     </joint>
@@ -51,19 +45,25 @@
   <!-- draw the table relative to the origin -->
   <xacro:model_table name="table_robot" 
 		     parent="world"
-		     length="2.0"
-		     width="1.20"
+		     length="0.50"
+		     width="0.42"
 		     height="0.75"
 		     plate_thickness="0.03">
 		     
-    <origin xyz="-0.30 0.60 -0.003" rpy="0 0 0"/>
+    <origin xyz="-0.25 0.21 -0.003" rpy="0 0 0"/>
     
   </xacro:model_table>
   
-  <xacro:sensor_asus_xtion_pro parent="ee_link">
-
-
-  </xacro:sensor_asus_xtion_pro>
+  <xacro:model_table name="table" 
+		     parent="world"
+		     length="0.50"
+		     width="0.42"
+		     height="0.58"
+		     plate_thickness="0.03">
+		     
+    <origin xyz="0.435 0.21 -0.158" rpy="0 0 0"/>
+    
+  </xacro:model_table>
  
 
 </robot>
